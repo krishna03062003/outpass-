@@ -11,10 +11,25 @@ const app = express();
 app.use(express.json());  
 
 // Middleware must be before routes
-app.use(cors({
-  origin: "http://localhost:5173", // Your frontend URL
-  credentials: true,
-}));
+const allowedOrigins = [
+  "https://outpass-z1a9.vercel.app/login",
+  
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // allow server-to-server or curl/postman
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(null, false); // ❌ no crash
+    },
+    credentials: true,
+  })
+);
 
 
 app.use(cookieParser());
