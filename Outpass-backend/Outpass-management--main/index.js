@@ -12,9 +12,10 @@ app.use(express.json());
 
 // Middleware must be before routes
 const allowedOrigins = [
-    "http://localhost:5173",
-  "https://outpass-z1a9.vercel.app",
-  
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5176",
+  "https://outpass-z1a9.vercel.app"
 ];
 app.use(
   cors({
