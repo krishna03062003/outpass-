@@ -108,7 +108,7 @@ const login = async (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
     });
     return res.status(200).json({ message: "Logged out successfully" });
 };
@@ -122,13 +122,12 @@ const adminLogin = async (req, res) => {
       expiresIn: "7d"
     });
 
-    res.cookie("adminToken", token, {
-      httpOnly: true,
-      sameSite: "none",
-      secure: false,  
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-
+   res.cookie("adminToken", token, {
+  httpOnly: true,
+  sameSite: "none",
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
     return res.status(200).json({ message: "Admin logged in", admin: name });
   } else {
     return res.status(401).json({ message: "Invalid credentials" });
@@ -137,11 +136,11 @@ const adminLogin = async (req, res) => {
 
 
 const adminlogout = (req, res) => {
-  res.clearCookie("adminToken", {
-      httpOnly: true,
-      secure:true,
-      sameSite: "strict",
-  });
+res.clearCookie("adminToken", {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
+});
   return res.status(200).json({ message: "Logged out successfully" });
 };
 
